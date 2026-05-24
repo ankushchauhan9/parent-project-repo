@@ -3,8 +3,11 @@ HELP.md
 # Gradle
 .gradle/
 build/
-/gradle/wrapper/
-!gradle/wrapper/gradle-wrapper.jar
+# Keep the gradle wrapper files tracked for repo-based builds/deploys
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+!/gradlew
+!/gradlew.bat
 !**/src/main/**/build/
 !**/src/test/**/build/
 
