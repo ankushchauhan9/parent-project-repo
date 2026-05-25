@@ -1,4 +1,4 @@
-name: CI-CD Pipeline
+name: Kubernetes Deployment
 
 on:
   push:
@@ -7,27 +7,25 @@ on:
 
 jobs:
 
-  build:
+  deploy:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
 
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-
-      - name: Grant permission
-        run: chmod +x gradlew
-
-      - name: Build JAR
-        run: ./gradlew clean build -x test
-
       - name: Build Docker Image
         run: |
+          eval $(minikube docker-env)
           docker build -t file-processor:latest .
+
+      - name: Deploy To Kubernetes
+        run: |
+          kubectl apply -f k8s/deployment.yml
+          kubectl apply -f k8s/service.yml
+
+      - name: Restart Deployment
+        run: |
+          kubectl rollout restart deployment file-processor
