@@ -1,1 +1,6 @@
 actions-runner/
+
+teamcity-agent
+
+.DS_Store
+.idea/
