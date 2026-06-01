@@ -4,3 +4,5 @@ teamcity-agent
 
 .DS_Store
 .idea/
+
+.gradle/

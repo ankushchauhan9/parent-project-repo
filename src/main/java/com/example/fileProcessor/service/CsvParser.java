@@ -1,5 +1,7 @@
 package com.example.fileProcessor.service;
 
+import com.example.fileProcessor.dto.TranslationRequest;
+import com.example.fileProcessor.dto.TranslationResponse;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
@@ -23,6 +25,9 @@ public class CsvParser implements FileParser {
     @Autowired
     private ArtifactTaskExecutor artifactTaskExecutorImpl;
 
+    @Autowired
+    private TranslationService translationService;
+
     @Override
     public void parse(File file) {
 
@@ -37,7 +42,18 @@ public class CsvParser implements FileParser {
             for(CSVRecord record : csvRecords) {
                 Map<String, String> map = record.toMap();
                 for(Map.Entry<String, String> entry: map.entrySet()) {
-                    output.put(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    output.put(key, value);
+                    if("first_name".equals(key)) {
+                        TranslationRequest request = new TranslationRequest();
+                        request.setSourceLanguage("english");
+                        request.setTargetLanguage("french");
+                        request.setText(value);
+                        TranslationResponse response = translationService.translate(request);
+                        log.info("Translated Text : {}", response.getTranslatedText());
+                        output.put("first_name_french", response.getTranslatedText());
+                    }
                 }
                 String groupId = String.format("%s-%s","UPLOAD-" ,System.nanoTime());
                 this.artifactTaskExecutorImpl.onNewTask(output.toString(), groupId);
