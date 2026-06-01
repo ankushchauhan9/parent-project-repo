@@ -8,10 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class TranslationService {
 
-    @Qualifier("OllamaAiClient")
     private final AiClient aiClient;
 
-    public TranslationService(AiClient aiClient) {
+    public TranslationService(@Qualifier("OllamaAiClient") AiClient aiClient) {
         this.aiClient = aiClient;
     }
 

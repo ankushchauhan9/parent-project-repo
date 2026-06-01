@@ -2,10 +2,12 @@ package com.example.fileProcessor.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service("OllamaAiClient")
 public class OllamaAiClient implements AiClient {
 
     private RestTemplate restTemplate = new RestTemplate();
