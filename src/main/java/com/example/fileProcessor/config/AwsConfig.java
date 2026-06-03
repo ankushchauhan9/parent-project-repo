@@ -22,7 +22,8 @@ import java.util.concurrent.Executor;
 public class AwsConfig {
 
     private static final Logger log = LoggerFactory.getLogger(AwsConfig.class);
-    private static final String FLOCKI_ENDPOINT = "http://localhost:4566";
+    @Value("${spring.cloud.aws.endpoint}")
+    private String flociEndpoint;
 
     @Value("${sqs.region}")
     private String awsRegion;
@@ -36,7 +37,7 @@ public class AwsConfig {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .endpointOverride(URI.create(FLOCKI_ENDPOINT))
+                .endpointOverride(URI.create(flociEndpoint))
                 .region(Region.of(awsRegion))
                 .credentialsProvider(credentialsProvider())
                 .forcePathStyle(true) // Required for local AWS emulators like Floci/LocalStack
@@ -46,7 +47,7 @@ public class AwsConfig {
     @Bean
     public SqsClient sqsClient() {
         return SqsClient.builder()
-                .endpointOverride(URI.create(FLOCKI_ENDPOINT))
+                .endpointOverride(URI.create(flociEndpoint))
                 .region(Region.of(awsRegion))
                 .credentialsProvider(credentialsProvider())
                 .build();
@@ -55,7 +56,7 @@ public class AwsConfig {
     @Bean
     public SqsAsyncClient sqsAsyncClient() {
         return SqsAsyncClient.builder()
-                .endpointOverride(URI.create(FLOCKI_ENDPOINT))
+                .endpointOverride(URI.create(flociEndpoint))
                 .region(Region.of(awsRegion))
                 .credentialsProvider(credentialsProvider())
                 .build();
@@ -77,7 +78,7 @@ public class AwsConfig {
     @Bean
     public SsmClient ssmClient() {
         return SsmClient.builder()
-                .endpointOverride(URI.create(FLOCKI_ENDPOINT))
+                .endpointOverride(URI.create(flociEndpoint))
                 .region(Region.of(awsRegion))
                 .credentialsProvider(StaticCredentialsProvider
                         .create(AwsBasicCredentials.create("test", "test")))
