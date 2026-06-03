@@ -101,19 +101,12 @@ public class AwsConfig {
     }
 
     private String fetchParameter(String name) {
-        // IMPORTANT: do not call ssmClient() here (that would call credentialsProvider() and create a cycle).
-        // Build a temporary SsmClient using fallback credentials to fetch the parameter.
-        try (SsmClient temp = SsmClient.builder()
-                .endpointOverride(URI.create(FLOCKI_ENDPOINT))
-                .region(Region.of(awsRegion))
-                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("test", "test")))
-                .build()) {
-
+        try {
             GetParameterRequest request = GetParameterRequest.builder()
                     .name(name)
                     .withDecryption(true)
                     .build();
-            return temp.getParameter(request).parameter().value();
+            return ssmClient().getParameter(request).parameter().value();
         } catch (Exception e) {
             log.debug("Unable to fetch parameter {} from SSM: {}", name, e.getMessage());
             return null;
