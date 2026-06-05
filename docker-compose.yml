@@ -12,6 +12,15 @@ services:
     depends_on:
       - floci
 
+  teamcity-agent:
+    image: custom-teamcity-agent
+    container_name: teamcity-agent
+    user: root
+    environment:
+      SERVER_URL: http://teamcity-server:8111
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   floci:
     image: floci/floci:latest
     container_name: floci
