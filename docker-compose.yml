@@ -13,13 +13,14 @@ services:
       - floci
 
   teamcity-agent:
-    image: custom-teamcity-agent
+    image: teamcity-agent-k8s
     container_name: teamcity-agent
     user: root
     environment:
       SERVER_URL: http://teamcity-server:8111
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
 
   floci:
     image: floci/floci:latest
