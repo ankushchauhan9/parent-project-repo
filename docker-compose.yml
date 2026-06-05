@@ -12,17 +12,22 @@ services:
     depends_on:
       - floci
 
+  teamcity-server:
+    image: jetbrains/teamcity-server
+    container_name: teamcity-server
+    ports:
+      - "8111:8111"
+
   teamcity-agent:
-    build:
-      context: .
-      dockerfile: teamcity-agent.Dockerfile
-    image: teamcity-agent-k8s
+    image: jetbrains/teamcity-agent:latest
+    container_name: teamcity-agent
     user: root
     environment:
       SERVER_URL: http://teamcity-server:8111
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
+    depends_on:
+      - teamcity-server
 
   floci:
     image: floci/floci:latest
