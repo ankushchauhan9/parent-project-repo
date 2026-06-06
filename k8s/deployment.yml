@@ -20,9 +20,9 @@ spec:
       containers:
         - name: file-processor
 
-          image: file-processor:latest
+          image: 111docker222/file-processor:latest
 
-          imagePullPolicy: Never
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8080
