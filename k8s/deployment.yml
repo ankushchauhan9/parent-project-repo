@@ -17,11 +17,12 @@ spec:
         app: file-processor
 
     spec:
+      imagePullSecrets:
+        - name: dockerhub-secret
+
       containers:
         - name: file-processor
-
           image: 111docker222/file-processor:latest
-
           imagePullPolicy: Always
 
           ports:
