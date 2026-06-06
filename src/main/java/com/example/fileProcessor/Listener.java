@@ -10,7 +10,7 @@ public class Listener {
 
     private static final Logger log = LoggerFactory.getLogger(Listener.class);
 
-    @SqsListener("${sqs.listener.queue.url}")
+    @SqsListener("${sqs.listener.queue.name}")
     public void readMessage(String message) {
         log.info("SQS MESSAGE RECEIVED : ");
         System.out.println("Message : "  + message);
