@@ -32,9 +32,11 @@ services:
       SERVER_URL: http://teamcity-server:8111
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /Users/ankushchauhan/.kube:/root/.kube
-      - /Users/ankushchauhan/.minikube:/root/.minikube
-    restart: unless-stopped
+      - ~/.kube/config-teamcity:/root/.kube/config
+      - ~/.minikube:/root/.minikube
+    networks:
+      - default
+      - minikube-net
 
 
   floci:
@@ -51,3 +53,8 @@ volumes:
     driver: local
   teamcity_server_data:
   teamcity_server_logs:
+
+networks:
+  minikube-net:
+    external: true
+    name: minikube
