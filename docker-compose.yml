@@ -23,7 +23,9 @@ services:
     restart: unless-stopped
 
   teamcity-agent:
-    build: .
+    build:
+      context: .
+      dockerfile: teamcity-agent.Dockerfile
     container_name: teamcity-agent
     user: root
     environment:
