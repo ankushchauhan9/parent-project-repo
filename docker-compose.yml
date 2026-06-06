@@ -32,8 +32,8 @@ services:
       SERVER_URL: http://teamcity-server:8111
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.kube/config-teamcity:/root/.kube/config
       - ~/.minikube:/root/.minikube
+      - ~/config-teamcity:/root/.kube/config
     networks:
       - default
       - minikube-net
