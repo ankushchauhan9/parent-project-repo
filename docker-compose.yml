@@ -17,6 +17,10 @@ services:
     container_name: teamcity-server
     ports:
       - "8111:8111"
+    volumes:
+      - teamcity_server_data:/data/teamcity_server/datadir
+      - teamcity_server_logs:/opt/teamcity/logs
+    restart: unless-stopped
 
   teamcity-agent:
       image: jetbrains/teamcity-agent:latest
@@ -30,6 +34,7 @@ services:
         - teamcity-server
       restart: unless-stopped
 
+
   floci:
     image: floci/floci:latest
     container_name: floci
@@ -42,3 +47,5 @@ services:
 volumes:
   floci-data:
     driver: local
+  teamcity_server_data:
+  teamcity_server_logs:
