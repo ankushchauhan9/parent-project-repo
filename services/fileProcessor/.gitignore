@@ -1,0 +1,42 @@
+# OS
+.DS_Store
+
+# IDEs
+/.idea/
+*.iml
+/.vscode/
+
+# Gradle
+/.gradle/
+.gradle/
+/build/
+/out/
+
+# Keep the Gradle wrapper files (gradlew, gradlew.bat, gradle/wrapper/**) committed for deployments
+
+# Logs and temp
+*.log
+/tmp/
+*.tmp
+
+# Local CI/agents and runners
+/actions-runner/
+/teamcity-agent/
+/buildAgent/
+
+# Docker
+docker-compose.override.yml
+
+# Secrets and environment files
+.env
+*.env
+aws-credentials
+credentials
+secrets.properties
+
+# Java
+*.class
+
+# Misc
+node_modules/
+.idea/

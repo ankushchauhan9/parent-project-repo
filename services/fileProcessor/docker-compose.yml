@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+
+  backend:
+    build: .
+    container_name: file-processor
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      - floci
+
+  teamcity-server:
+    image: jetbrains/teamcity-server
+    container_name: teamcity-server
+    ports:
+      - "8111:8111"
+    volumes:
+      - teamcity_server_data:/data/teamcity_server/datadir
+      - teamcity_server_logs:/opt/teamcity/logs
+    restart: unless-stopped
+
+  teamcity-agent:
+    build:
+      context: .
+      dockerfile: teamcity-agent.Dockerfile
+    container_name: teamcity-agent
+    user: root
+    environment:
+      SERVER_URL: http://teamcity-server:8111
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.minikube:/root/.minikube
+      - ~/config-teamcity:/root/.kube/config
+    networks:
+      - default
+      - minikube-net
+
+
+  floci:
+    image: floci/floci:latest
+    container_name: floci
+    ports:
+      - "4566:4566"
+    restart: unless-stopped
+    volumes:
+      - floci-data:/app/data
+
+volumes:
+  floci-data:
+    driver: local
+  teamcity_server_data:
+  teamcity_server_logs:
+
+networks:
+  minikube-net:
+    external: true
+    name: minikube
